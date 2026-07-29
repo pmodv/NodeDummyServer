@@ -24,11 +24,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set lowercase repository name
+        id: repo_name
+        run: |
+          # Convert repository name to lowercase using bash parameter expansion
+          RAW_NAME="${{ github.event.repository.name }}"
+          echo "lowercase=${RAW_NAME,,}" >> $GITHUB_OUTPUT
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ ${{ lower(github.event.repository.name) }}:latest
+          # Combined your Docker Hub username and the new lowercase step output without spaces
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.repo_name.outputs.lowercase }}:latest
 
 
