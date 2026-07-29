@@ -1,0 +1,20 @@
+# Use a lightweight Node.js base image
+FROM node:20-alpine
+
+# Create and set the application directory inside the container
+WORKDIR /usr/src/app
+
+# Copy package files first to leverage Docker layer caching for dependencies
+COPY package*.json ./
+
+# Install application dependencies
+RUN npm ci --only=production
+
+# Copy the rest of your application code (like index.js)
+COPY . .
+
+# Expose the port your server listens on (change 3000 if your dummy server uses a different port)
+EXPOSE 3000
+
+# Command to start your Node application
+CMD [ "node", "index.js" ]
