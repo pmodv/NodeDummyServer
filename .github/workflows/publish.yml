@@ -29,6 +29,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ ${{ toLower(github.event.repository.name) }}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ ${{ lower(github.event.repository.name) }}:latest
 
 
